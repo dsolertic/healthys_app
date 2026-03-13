@@ -44,13 +44,33 @@ class _ProductGridScreenState extends State<ProductGridScreen> {
       appBar: AppBar(title: const Text('Healthys')),
       // El cos principal dependrà de la llista de productes, que és un
       // Future. Per tant fem ús del FutureBuilder:
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: FutureBuilder(
+        future: _llistaProductes, // Dependrem del Future _llistaProductes
+        builder: (context, asyncSnapshot) {
+          // Quan el Future _llistaProductes estiga complet, s'invoca aquest builder
+          // Mentre no es reben dades, mostrarem una barra de procrés circular
+          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (asyncSnapshot.hasError) {
+            // Si hi ha algun error es mostra
+            return Center(child: Text("Error: ${asyncSnapshot.error}"));
+          }
 
-        // TO-DO 1:
-        // Reemplaçar pel FutureBuilder, que cree un GridView amb
-        // les diferents targetes
-        child: Placeholder(),
+          // Si tot va bé, en asyncSnapshot.data tindrem les dades (la llista de productes)
+          List<Producte> productes = asyncSnapshot.data ?? [];
+          // Fem ús de ListviewBuilder per construir la llista d'items
+          return GridView.builder(
+            itemCount: productes.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Dos columnes
+              childAspectRatio: 3 / 4, // Relació d'aspecte dels elements
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return GridItem(producte: productes[index]);
+            },
+          );
+        },
       ),
     );
   }

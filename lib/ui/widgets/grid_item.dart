@@ -1,3 +1,44 @@
+import 'package:flutter/material.dart';
+import 'package:healthys_app/domain/entities/producte.dart';
+
+class GridItem extends StatelessWidget {
+  const GridItem({super.key, required this.producte});
+
+  final Producte producte;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Flexible(
+            flex: 8,
+            child: producte.img != null
+                ? Image.network(
+                    producte.img ?? "",
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    "assets/img/not_found.png",
+                    fit: BoxFit.cover,
+                  ),
+          ),
+          Flexible(
+            flex: 3,
+            child: Text(
+              producte.name,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+
+    );
+  }
+}
 // TO-DO 2:
 // classe GridItem: Widget sense estat per representar 
 // amb una targeta el producte (imatge i nom)

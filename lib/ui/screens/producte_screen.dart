@@ -123,7 +123,7 @@ class ProducteScreen extends StatelessWidget {
                   ),
 
                   // Al final afegim un botó per afegir el producte al carret
-                  callToActionButton(), // Aquest serà el widget que haurem d'implementar
+                  CallToActionButton(), // Aquest serà el widget que haurem d'implementar
                 ],
               ),
             ),
